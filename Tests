@@ -1,0 +1,63 @@
+[TestFixture]
+    public class StringCalculatorTests
+    {
+        [Test]
+        public void ShouldReturnZeroForEmptyString()
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers("");
+            Assert.AreEqual(0,result);
+        }
+
+        [Test]
+        [TestCase(1,"1")]
+        [TestCase(2,"2")]
+        public void ShouldReturnNumberIfGivenOneNumber(int expected,string arg)
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers(arg);
+            Assert.AreEqual(expected,result);
+        }
+
+        [Test]
+        [TestCase(3, "1,2")]
+        [TestCase(11, "1,2,3,5")]
+        public void ShouldReturnSumOfAllNumbers(int expected, string arg)
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers(arg);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        [TestCase(3, "1\n2")]
+        [TestCase(11, "1,2\n3,5")]
+        public void ShouldAllowNewLineAsASeparator(int expected, string arg)
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers(arg);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        [TestCase(3, "//;\n1;2")]
+        [TestCase(11, "//.\n1.2\n3.5")]
+        [TestCase(11, "//-\n1-2\n3-5")]
+        public void ShouldSupportDifferentSeparators(int expected, string arg)
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers(arg);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        [TestCase(3, "//;\n-1;2")]
+        [TestCase(3, "//;\n-1;-2")]
+        [ExpectedException(typeof(Exception))]
+        public void ShouldThrowExceptionIfNegativeInArgs(int expected, string arg)
+        {
+            var sut = new StringCalculator();
+            var result = sut.AddNumbers(arg);
+            Assert.AreEqual(expected, result);
+        }
+    }
